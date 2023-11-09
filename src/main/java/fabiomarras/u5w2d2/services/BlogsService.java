@@ -1,5 +1,7 @@
 package fabiomarras.u5w2d2.services;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import fabiomarras.u5w2d2.exceptions.NotFoundException;
 import fabiomarras.u5w2d2.entities.Author;
 import fabiomarras.u5w2d2.entities.Blog;
@@ -10,6 +12,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @Service
 public class BlogsService {
@@ -24,6 +29,9 @@ public class BlogsService {
 
     @Autowired
     private AuthorService authorService;
+
+    @Autowired
+    private Cloudinary cloudinary;
 
     //GET /blogPosts
     public Page<Blog> getBlogs(int page, int size, String orderBy) {
@@ -56,5 +64,9 @@ public class BlogsService {
     public void findByIdAndDelete(int id) {
     Blog blog = this.findById(id);
     blogsRepository.delete(blog);
+    }
+
+    public String uploadPicture(MultipartFile file) throws IOException {
+        return (String) cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap()).get("url");
     }
 }

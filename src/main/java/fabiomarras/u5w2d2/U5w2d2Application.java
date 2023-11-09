@@ -2,6 +2,7 @@ package fabiomarras.u5w2d2;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import com.cloudinary.Cloudinary;
 
 @SpringBootApplication
 public class U5w2d2Application {

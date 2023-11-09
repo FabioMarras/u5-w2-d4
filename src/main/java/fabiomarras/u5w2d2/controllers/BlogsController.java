@@ -7,7 +7,9 @@ import fabiomarras.u5w2d2.services.BlogsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -34,7 +36,7 @@ public class BlogsController {
 
     //POST /blogPosts - crea
     @PostMapping("")
-    public Blog saveNewBlog(@RequestBody Blog body){
+    public Blog saveNewBlog(@RequestBody Blog body) {
         return blogsService.save(body);
     }
 
@@ -48,5 +50,12 @@ public class BlogsController {
     @DeleteMapping("/{id}")
     public void findByIdAndDelete(@PathVariable int id){
         blogsService.findByIdAndDelete(id);
+    }
+
+    @PostMapping("/upload")
+    public String uploadExample(@RequestParam("avatar") MultipartFile body) throws IOException {
+       System.out.println(body.getSize());
+        System.out.println(body.getContentType());
+        return blogsService.uploadPicture(body);
     }
 }

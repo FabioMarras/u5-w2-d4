@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.File;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -17,6 +19,7 @@ public class Blog {
     private String cover;
     private String contenuto;
     private int tempoDiLettura;
+    private String avatar;
 
     @ManyToOne
     @JoinColumn(name = "AUTHOR_ID")
