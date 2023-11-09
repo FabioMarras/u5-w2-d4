@@ -5,6 +5,7 @@ import com.cloudinary.utils.ObjectUtils;
 import fabiomarras.u5w2d2.exceptions.NotFoundException;
 import fabiomarras.u5w2d2.entities.Author;
 import fabiomarras.u5w2d2.entities.Blog;
+import fabiomarras.u5w2d2.payloads.NewBlogRequestDTO;
 import fabiomarras.u5w2d2.repositories.BlogsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -45,10 +46,16 @@ public class BlogsService {
     }
 
     //POST /blogPosts - crea
-    public Blog save(Blog body) {
-        Author author = authorService.findById(body.getAuthor().getId());
-        body.setAuthor(author);
-        return blogsRepository.save(body);
+    public Blog save(NewBlogRequestDTO body) throws IOException{
+        Blog blog = new Blog();
+        blog.setCategoria(body.categoria());
+        blog.setTitolo(body.titolo());
+        blog.setCover(body.cover());
+        blog.setContenuto(body.contenuto());
+        blog.setTempoDiLettura(body.tempoDiLettura());
+        blog.setAvatar(body.avatar());
+        Blog saveBlog = blogsRepository.save(blog);
+        return saveBlog;
     }
 
     //PUT /blogPosts/id - modifica

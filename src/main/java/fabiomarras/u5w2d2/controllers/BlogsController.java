@@ -2,10 +2,15 @@ package fabiomarras.u5w2d2.controllers;
 
 import fabiomarras.u5w2d2.entities.Author;
 import fabiomarras.u5w2d2.entities.Blog;
+import fabiomarras.u5w2d2.exceptions.BadRequestException;
+import fabiomarras.u5w2d2.payloads.NewBlogRequestDTO;
 import fabiomarras.u5w2d2.services.AuthorService;
 import fabiomarras.u5w2d2.services.BlogsService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -35,9 +40,24 @@ public class BlogsController {
     }
 
     //POST /blogPosts - crea
+//    @PostMapping("")
+//    public Blog saveNewBlog(@Valid @RequestBody Blog body, BindingResult validation) {
+//        if (validation.hasErrors()) {
+//            throw new BadRequestException(validation.getAllErrors());
+//        }
+//        if (body.getTitolo() == null || body.getTitolo().isEmpty()) {
+//            throw new BadRequestException("Il titolo è obbligatorio."); }
+//            return blogsService.save(body);
+//        }
+
+
     @PostMapping("")
-    public Blog saveNewBlog(@RequestBody Blog body) {
-        return blogsService.save(body);
+    public Blog saveNewBlog(@RequestBody @Validated NewBlogRequestDTO body, BindingResult validation) throws IOException {
+        if (validation.hasErrors()) {
+            throw new BadRequestException(validation.getAllErrors());
+        } else {
+            return blogsService.save(body);
+        }
     }
 
     //PUT /blogPosts/id - modifica
